@@ -3,6 +3,7 @@ package com.semestral.socialNetwork.service;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
+import com.semestral.socialNetwork.model.UserModel;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getOneUser(Long id) throws UserDoesntExistsException {
+    public UserModel getOneUser(Long id) throws UserDoesntExistsException {
         User user;
         try{
             user = userRepository.findById(id).get();
@@ -32,7 +33,7 @@ public class UserService {
         }
         if(user == null)
             throw new UserDoesntExistsException("There is no user with specified id");
-        return user;
+        return UserModel.toModel(user);
     }
 
 }
