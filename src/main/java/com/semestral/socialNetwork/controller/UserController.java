@@ -39,4 +39,15 @@ public class UserController{
             return ResponseEntity.badRequest().body("An error was occurred");
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id){
+        try{
+            return ResponseEntity.ok(userService.deleteUser(id));
+        } catch (UserDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
+        }
+    }
 }

@@ -24,6 +24,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
     public UserModel getOneUser(Long id) throws UserDoesntExistsException {
         User user;
         try{
@@ -36,4 +37,12 @@ public class UserService {
         return UserModel.toModel(user);
     }
 
+    public Long deleteUser(Long id) throws UserDoesntExistsException {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return id;
+        }
+        else
+            throw new UserDoesntExistsException("There is no user with specified id");
+    }
 }
