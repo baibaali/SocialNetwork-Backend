@@ -1,6 +1,7 @@
 package com.semestral.socialNetwork.controller;
 
 import com.semestral.socialNetwork.entity.Comment;
+import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
 import com.semestral.socialNetwork.service.CommentService;
@@ -29,6 +30,28 @@ public class CommentController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("An error was occured");
         }
+    }
 
+    @DeleteMapping("/{id_user}/posts/{id_post}/comments/{id_comment}")
+    public ResponseEntity deleteComment(@PathVariable Long id_user, @PathVariable Long id_post, @PathVariable Long id_comment){
+        try{
+            return ResponseEntity.ok(commentService.deleteComment(id_user, id_post, id_comment));
+        } catch (PostDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
+        }
+    }
+
+    @PutMapping("/{id_user}/posts/{id_post}/comments")
+    public ResponseEntity updateComment(@PathVariable Long id_user, @PathVariable Long id_post,
+                                     @RequestParam Long id_comment, @RequestBody Comment comment){
+        try{
+            return ResponseEntity.ok(commentService.updateComment(id_user, id_post, id_comment, comment));
+        } catch (PostDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
+        }
     }
 }
