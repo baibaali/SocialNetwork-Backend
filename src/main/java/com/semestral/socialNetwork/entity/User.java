@@ -15,9 +15,13 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Comment> comments;
 
     @ManyToMany(mappedBy = "usersWhoLiked")
     private List<Post> likedPosts;
+
+
 
     public User(long id, String username, String password) {
         this.id = id;
@@ -73,5 +77,13 @@ public class User {
             this.likedPosts.remove(post);
         else
             this.likedPosts.add(post);
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComment(Comment comment) {
+        this.comments.add(comment);
     }
 }

@@ -3,6 +3,7 @@ package com.semestral.socialNetwork.controller;
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
+import com.semestral.socialNetwork.service.CommentService;
 import com.semestral.socialNetwork.service.PostService;
 import com.semestral.socialNetwork.service.UserService;
 import org.apache.coyote.Response;
@@ -18,6 +19,8 @@ public class PostController {
     private PostService postService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentService commentService;
 
     @PostMapping
     public ResponseEntity createPost(@RequestBody Post post, @RequestParam Long user_id) throws UserDoesntExistsException {
@@ -73,5 +76,6 @@ public class PostController {
             return ResponseEntity.badRequest().body("An error was occurred");
         }
     }
+
 
 }

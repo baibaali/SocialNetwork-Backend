@@ -1,9 +1,6 @@
 package com.semestral.socialNetwork.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "comment")
 public class Comment {
@@ -13,6 +10,14 @@ public class Comment {
     private long id;
     private String commentBody;
     private String commentTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     public Comment(){
     }
@@ -39,5 +44,21 @@ public class Comment {
 
     public void setCommentTime(String commentTime) {
         this.commentTime = commentTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

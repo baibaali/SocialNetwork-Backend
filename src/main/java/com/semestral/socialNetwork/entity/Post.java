@@ -20,6 +20,9 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post_id")
+    private List<Comment> comments;
+
     @ManyToMany
     @JoinTable(name = "user_liked", joinColumns = @JoinColumn(name = "post_id"),
                 inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -88,5 +91,13 @@ public class Post {
             this.usersWhoLiked.remove(user);
         else
             this.usersWhoLiked.add(user);
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComment(Comment comment) {
+        this.comments.add(comment);
     }
 }

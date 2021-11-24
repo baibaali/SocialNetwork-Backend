@@ -1,6 +1,7 @@
 package com.semestral.socialNetwork.service;
 
 
+import com.semestral.socialNetwork.entity.Comment;
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
@@ -110,6 +111,5 @@ public class PostService {
         return PostModelWithoutUsersList.toModel(postRepository.save(post));
 
     }
-
 
 }
