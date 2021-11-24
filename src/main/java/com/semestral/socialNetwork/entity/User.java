@@ -6,8 +6,6 @@ import java.util.List;
 @Entity
 public class User {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -50,4 +48,13 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
 }
