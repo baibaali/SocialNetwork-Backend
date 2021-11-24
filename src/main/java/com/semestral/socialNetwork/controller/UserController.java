@@ -1,5 +1,6 @@
 package com.semestral.socialNetwork.controller;
 
+import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
@@ -59,6 +60,17 @@ public class UserController{
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("An error was occurred, while showing the users, who liked the post");
+        }
+    }
+
+    @PutMapping("/{id}/edit")
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user){
+        try{
+            return ResponseEntity.ok(userService.updateUser(id, user));
+        } catch (UserDoesntExistsException | UserAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
         }
     }
 

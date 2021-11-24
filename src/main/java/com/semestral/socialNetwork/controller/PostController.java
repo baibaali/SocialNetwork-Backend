@@ -5,6 +5,7 @@ import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
 import com.semestral.socialNetwork.service.PostService;
 import com.semestral.socialNetwork.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class PostController {
         } catch (UserDoesntExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("An error was occurred");
+            return ResponseEntity.badRequest().body("An error was occurred :(");
         }
     }
 
@@ -51,5 +52,26 @@ public class PostController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePost(@PathVariable Long id){
+        try{
+            return ResponseEntity.ok(postService.deletePost(id));
+        } catch (PostDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
+        }
+    }
+
+    @PutMapping("/{id}/edit")
+    public ResponseEntity updatePost(@PathVariable Long id, @RequestBody Post post){
+        try{
+            return ResponseEntity.ok(postService.updatePost(id, post));
+        } catch (PostDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred");
+        }
+    }
 
 }

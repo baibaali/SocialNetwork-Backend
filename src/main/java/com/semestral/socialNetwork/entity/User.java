@@ -15,7 +15,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersWhoLiked")
+
+    @ManyToMany(mappedBy = "usersWhoLiked")
     private List<Post> likedPosts;
 
     public User(long id, String username, String password) {

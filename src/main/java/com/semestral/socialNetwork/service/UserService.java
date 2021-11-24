@@ -8,6 +8,7 @@ import com.semestral.socialNetwork.exception.UserDoesntExistsException;
 import com.semestral.socialNetwork.model.PostModel;
 import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
 import com.semestral.socialNetwork.model.UserModel;
+import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -47,6 +49,10 @@ public class UserService {
 
     public Long deleteUser(Long id) throws UserDoesntExistsException {
         if (userRepository.existsById(id)) {
+            User user = userRepository.findById(id).get();
+            for(Post post: postRepository.findAll())
+                if(post.getUsersWhoLiked().contains(user))
+                    post.getUsersWhoLiked().remove(user);
             userRepository.deleteById(id);
             return id;
         }
@@ -64,6 +70,23 @@ public class UserService {
         if (user == null)
             throw new UserDoesntExistsException("There is no user with specified id");
         return UserModel.toModel(user).getLikedPosts();
+    }
+
+    public UserModelWithoutPostsList updateUser(Long id, User updatedUser) throws UserDoesntExistsException, UserAlreadyExistsException {
+        if (userRepository.findById(id).isEmpty())
+            throw new UserDoesntExistsException("There is no user with specified id");
+        User user = userRepository.findById(id).get();
+        if (updatedUser.getUsername() != null && !Objects.equals(updatedUser.getUsername(), user.getUsername())) {
+            if(userRepository.findByUsername(updatedUser.getUsername()) != null)
+                throw new UserAlreadyExistsException("This username is already taken");
+            user.setUsername(updatedUser.getUsername());
+        }
+        if (updatedUser.getPassword() != null) {
+            user.setPassword(updatedUser.getPassword());
+        }
+
+        return UserModelWithoutPostsList.toModel(userRepository.save(user));
+
     }
 
 }
