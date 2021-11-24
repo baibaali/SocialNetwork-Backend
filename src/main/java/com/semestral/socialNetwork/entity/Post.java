@@ -3,8 +3,9 @@ package com.semestral.socialNetwork.entity;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
-@Entity
+@Entity(name="post")
 public class Post {
 
     @Id
@@ -18,6 +19,11 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(name = "user_liked", joinColumns = @JoinColumn(name = "post_id"),
+                inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> usersWhoLiked;
 
     public Post() {
     }
@@ -67,5 +73,20 @@ public class Post {
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
+    }
+
+    public List<User> getUsersWhoLiked() {
+        return usersWhoLiked;
+    }
+
+    public void setUsersWhoLiked(List<User> usersWhoLiked) {
+        this.usersWhoLiked = usersWhoLiked;
+    }
+
+    public void addLike(User user){
+        if (this.usersWhoLiked.contains(user))
+            this.usersWhoLiked.remove(user);
+        else
+            this.usersWhoLiked.add(user);
     }
 }

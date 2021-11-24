@@ -10,7 +10,8 @@ public class UserModel {
     private Long id;
     private String username;
 
-    private List<PostModel> posts;
+    private List<PostModelWithoutUsersList> posts;
+    private List<PostModelWithoutUsersList> likedPosts;
 
     public UserModel() {
     }
@@ -19,15 +20,16 @@ public class UserModel {
         UserModel userModel = new UserModel();
         userModel.setId(userEntity.getId());
         userModel.setUsername(userEntity.getUsername());
-        userModel.setPosts(userEntity.getPosts().stream().map(PostModel::toModel).collect(Collectors.toList()));
+        userModel.setPosts(userEntity.getPosts().stream().map(PostModelWithoutUsersList::toModel).collect(Collectors.toList()));
+        userModel.setLikedPosts(userEntity.getLikedPosts().stream().map(PostModelWithoutUsersList::toModel).collect(Collectors.toList()));
         return userModel;
     }
 
-    public List<PostModel> getPosts() {
+    public List<PostModelWithoutUsersList> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<PostModel> posts) {
+    public void setPosts(List<PostModelWithoutUsersList> posts) {
         this.posts = posts;
     }
 
@@ -45,5 +47,13 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<PostModelWithoutUsersList> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(List<PostModelWithoutUsersList> likedPosts) {
+        this.likedPosts = likedPosts;
     }
 }

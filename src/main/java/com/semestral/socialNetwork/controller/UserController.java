@@ -1,9 +1,9 @@
 package com.semestral.socialNetwork.controller;
 
 import com.semestral.socialNetwork.entity.User;
+import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.repository.UserRepository;
 import com.semestral.socialNetwork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +50,16 @@ public class UserController{
             return ResponseEntity.badRequest().body("An error was occurred");
         }
     }
+
+    @GetMapping("/{id_user}/liked_posts")
+    public ResponseEntity getLikedPost(@PathVariable Long id_user){
+        try {
+            return ResponseEntity.ok(userService.getLikedPosts(id_user));
+        } catch (UserDoesntExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("An error was occurred, while showing the users, who liked the post");
+        }
+    }
+
 }

@@ -3,7 +3,7 @@ package com.semestral.socialNetwork.entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name = "user")
 public class User {
 
     @Id
@@ -15,6 +15,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "usersWhoLiked")
+    private List<Post> likedPosts;
+
     public User(long id, String username, String password) {
         this.id = id;
         this.username = username;
@@ -22,7 +25,6 @@ public class User {
     }
 
     public User() {
-
     }
 
     public long getId() {
@@ -57,4 +59,18 @@ public class User {
         this.posts = posts;
     }
 
+    public List<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(List<Post> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public void addLikedPost(Post post) {
+        if (this.likedPosts.contains(post))
+            this.likedPosts.remove(post);
+        else
+            this.likedPosts.add(post);
+    }
 }

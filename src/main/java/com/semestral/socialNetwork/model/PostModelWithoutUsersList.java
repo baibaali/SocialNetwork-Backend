@@ -4,25 +4,23 @@ import com.semestral.socialNetwork.entity.Post;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostModel {
+public class PostModelWithoutUsersList {
 
     private Long id;
     private String title;
     private String body;
     private String postedAt;
-    private List<UserModelWithoutPostsList> usersWhoLiked;
 
-    public static PostModel toModel(Post post) {
-        PostModel postModel = new PostModel();
+    public static PostModelWithoutUsersList toModel(Post post) {
+        PostModelWithoutUsersList postModel = new PostModelWithoutUsersList();
         postModel.setId(post.getId());
         postModel.setTitle(post.getTitle());
         postModel.setBody(post.getBody());
         postModel.setPostedAt(post.getPostedAt());
-        postModel.setUsersWhoLiked(post.getUsersWhoLiked().stream().map(UserModelWithoutPostsList::toModel).collect(Collectors.toList()));
         return postModel;
     }
 
-    public PostModel() {
+    public PostModelWithoutUsersList() {
     }
 
     public Long getId() {
@@ -57,11 +55,4 @@ public class PostModel {
         this.postedAt = postedAt;
     }
 
-    public List<UserModelWithoutPostsList> getUsersWhoLiked() {
-        return usersWhoLiked;
-    }
-
-    public void setUsersWhoLiked(List<UserModelWithoutPostsList> usersWhoLiked) {
-        this.usersWhoLiked = usersWhoLiked;
-    }
 }
