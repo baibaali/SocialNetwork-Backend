@@ -1,0 +1,328 @@
+### Create new user
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "Alisher",
+  "password": "12345pass12345"
+}
+
+### Create new user
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "Roman",
+  "password": "my_password"
+}
+
+### Create new user
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "JaUzNestacim",
+  "password": "NicNestiham"
+}
+
+### Find user with id = 1
+
+GET http://localhost:8080/users?id=1
+Accept: application/json
+
+<> 2021-11-25T010656.200.json
+
+### Delete user with id = 1
+
+DELETE http://localhost:8080/users/1
+Accept: application/json
+
+<> 2021-11-25T010758.200.json
+
+### Find user with id = 1
+
+GET http://localhost:8080/users?id=1
+Accept: application/json
+
+<> 2021-11-25T010828.400.json
+
+### Create a post with user-author with id = 2
+
+POST http://localhost:8080/posts?user_id=2
+Content-Type: application/json
+
+{
+  "title": "First post!",
+  "body": "This is the first post in our social network!"
+}
+
+<> 2021-11-25T011054.200.json
+
+### Like post with id 9 by user with id 3
+
+POST http://localhost:8080/posts/9?id_user=3
+Accept: application/json
+
+<> 2021-11-25T011313.400.json
+
+### Like post with id 1 by user with id 3
+
+POST http://localhost:8080/posts/1?id_user=3
+Accept: application/json
+
+<> 2021-11-25T011343.200.json
+
+### Show list of users, who liked the post with id 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T011427.200.json
+
+### Find user with id = 2
+
+GET http://localhost:8080/users?id=2
+Accept: application/json
+
+<> 2021-11-25T011602.200.json
+
+### Find user with id = 3
+
+GET http://localhost:8080/users?id=3
+Accept: application/json
+
+<> 2021-11-25T011650.200.json
+
+### Like the post with id 16 by uther with id 2
+
+POST http://localhost:8080/posts/1?id_user=2
+Accept: application/json
+
+<> 2021-11-25T013030.200.json
+
+### Show list of users, who like the post with id = 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T013526.200.json
+
+### Like the post with id 16 by uther with id 2 (2 times set = unset)
+
+POST http://localhost:8080/posts/1?id_user=2
+Accept: application/json
+
+<> 2021-11-25T013607.200.json
+
+### Show list of users, who like the post with id = 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T013623.200.json
+
+### Like the post with id 16 by uther with id 2
+
+POST http://localhost:8080/posts/1?id_user=2
+Accept: application/json
+
+<> 2021-11-25T013643.200.json
+
+
+### Show list of users, who like the post with id = 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T013655.200.json
+
+### Show the posts, that user with id=2 liked
+
+GET http://localhost:8080/users/2/liked_posts
+Accept: application/json
+
+<> 2021-11-25T013726.200.json
+
+### Show list of users, who like the post with id = 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T013837.200.json
+
+### Delete user with id = 3
+DELETE http://localhost:8080/users/3
+Accept: application/json
+
+<> 2021-11-25T013920.200.json
+
+### Show list of users, who like the post with id = 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T013933.200.json
+
+### Update a post with id=1
+PUT http://localhost:8080/posts/1/edit
+Content-Type: application/json
+
+{
+  "title": "Owned by id=2",
+  "body": "ID=2"
+}
+
+<> 2021-11-25T014649.200.json
+
+### Create a post with user-author with id=2
+POST http://localhost:8080/posts?user_id=2
+Content-Type: application/json
+
+{
+  "title": "Second post! Owned by user with id=2",
+  "body": "ID=2"
+}
+
+<> 2021-11-25T014700.200.json
+
+### Find user with id = 2
+GET http://localhost:8080/users?id=2
+Accept: application/json
+
+<> 2021-11-25T014707.200.json
+
+### Create a new user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass"
+}
+
+<> 2021-11-25T014843.200.txt
+
+### Edit user with id = 4
+PUT http://localhost:8080/users/4/edit
+Content-Type: application/json
+
+{
+  "username": "user_user"
+}
+
+<> 2021-11-25T015111.200.json
+
+### Edit user with id = 4
+PUT http://localhost:8080/users/4/edit
+Content-Type: application/json
+
+{
+  "username": "user_user"
+}
+
+<> 2021-11-25T015155.200.json
+
+### Find user with id=4
+GET http://localhost:8080/users?id=4
+Accept: application/json
+
+<> 2021-11-25T015325.200.json
+
+### Find user with id=4
+GET http://localhost:8080/users?id=2
+Accept: application/json
+
+<> 2021-11-25T015439.200.json
+
+### Edit user with id = 4
+PUT http://localhost:8080/users/4/edit
+Content-Type: application/json
+
+{
+  "username": "Roman"
+}
+
+<> 2021-11-25T015455.400.txt
+
+### User with id=4 commenting post with id=2
+POST http://localhost:8080/users/4/posts/2
+Content-Type: application/json
+
+{
+  "commentBody": "User with id=4 commented post with id=2"
+}
+
+<> 2021-11-25T015812.200.json
+
+### Edit comment with id=1, under the post with id=2 written by user with id=4
+PUT http://localhost:8080/users/4/posts/2/comments/?id_comment=1
+Content-Type: application/json
+
+{
+  "commentBody": "just edited my comment under the post with id = 2"
+}
+
+<> 2021-11-25T020047.200.json
+
+
+### One more comment
+POST http://localhost:8080/users/4/posts/2
+Content-Type: application/json
+
+{
+  "commentBody": "one more comment"
+}
+
+<> 2021-11-25T020202.200.json
+
+### Delete comment with id=1 under the post with id=2, written the user wtih id=4
+DELETE http://localhost:8080/users/4/posts/2/comments/1
+Accept: application/json
+
+<> 2021-11-25T020416.200.json
+
+### try again
+DELETE http://localhost:8080/users/4/posts/2/comments/1
+Accept: application/json
+
+<> 2021-11-25T020511.400.json
+
+### Dlete user with id=4
+DELETE http://localhost:8080/users/4
+
+<> 2021-11-25T020557.200.json
+
+### Attempt to delete comment written by user with id=4(user with id=4 was deleted, so all th comments written by him was deleted too)
+DELETE http://localhost:8080/users/4/posts/2/comments/2
+Accept: application/json
+
+<> 2021-11-25T020631.400.json
+
+### Show list of users, who liked the post with id 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T020742.200.json
+
+###Find the user with id=2
+GET http://localhost:8080/users?id=2
+
+<> 2021-11-25T020915.400.txt
+
+### Delete user with id = 2
+DELETE http://localhost:8080/users/2
+
+<> 2021-11-25T020810.200.json
+
+### Show list of users, who liked the post with id 1
+
+GET http://localhost:8080/posts/1/liked
+Accept: application/json
+
+<> 2021-11-25T020819.400.json
+
+### Now we have empty database
