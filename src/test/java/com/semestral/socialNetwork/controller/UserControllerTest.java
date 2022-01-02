@@ -46,10 +46,9 @@ class UserControllerTest {
         given(userService.registration(any(User.class))).willReturn(user);
 
         this.mockMvc.perform(
-                        post(
-                                "/users", user)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"username\":\"baibaali\", \"password\":\"dummypass\"}")
+                        post("/users", user)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"baibaali\", \"password\":\"dummypass\"}")
                 ).andExpect(status().isOk())
                  .andExpect(content().string(containsString("User was successfully created")));
     }
@@ -179,7 +178,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"baibaali\", \"password\":\"dummypass\"}")
         ).andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username", CoreMatchers.is(user.getUsername())));
+         .andExpect(MockMvcResultMatchers.jsonPath("$.username", CoreMatchers.is(user.getUsername())));
     }
 
     @Test
