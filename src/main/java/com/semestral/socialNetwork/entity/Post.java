@@ -31,6 +31,14 @@ public class Post {
     public Post() {
     }
 
+    public Post(Long id, String title, String body, User user) {
+        this.setId(id);
+        this.setTitle(title);
+        this.setBody(body);
+        this.setPostedAt();
+        this.setUser(user);
+    }
+
     public Long getId() {
         return id;
     }

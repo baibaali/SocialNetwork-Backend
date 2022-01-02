@@ -2,6 +2,8 @@ package com.semestral.socialNetwork.model;
 
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +15,14 @@ public class UserModel {
     private List<PostModelWithoutUsersList> posts;
     private List<PostModelWithoutUsersList> likedPosts;
 
-    public UserModel() {
+    public UserModel(){
+    }
+
+    public UserModel(long id, String username) {
+        this.username = username;
+        this.id = id;
+        posts = new ArrayList<>();
+        likedPosts = new ArrayList<>();
     }
 
     public static UserModel toModel(User userEntity){
