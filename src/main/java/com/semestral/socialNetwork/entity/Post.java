@@ -39,6 +39,7 @@ public class Post {
         this.setPostedAt();
         this.setUser(user);
         this.usersWhoLiked = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public Long getId() {

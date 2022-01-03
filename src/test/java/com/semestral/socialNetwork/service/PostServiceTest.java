@@ -31,8 +31,6 @@ import static org.mockito.Mockito.*;
 class PostServiceTest {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private PostService postService;
 
     @MockBean
