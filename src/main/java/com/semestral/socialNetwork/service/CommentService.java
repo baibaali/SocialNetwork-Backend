@@ -67,7 +67,7 @@ public class CommentService {
         if (userRepository.findById(id_user).isEmpty())
             throw new UserDoesntExistsException("User with specified id is not found");
         if (postRepository.findById(id_post).isEmpty())
-            throw new PostDoesntExistsException("User with specified id is not found");
+            throw new PostDoesntExistsException("Post with specified id is not found");
         if (commentRepository.findById(id_comment).isEmpty())
             throw new CommentDoesntExistsException("Comment with specified id is not found");
         if (commentRepository.findById(id_comment).get().getUser().getId() != id_user)

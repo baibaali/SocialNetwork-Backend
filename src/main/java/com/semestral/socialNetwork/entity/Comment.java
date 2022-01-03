@@ -22,6 +22,14 @@ public class Comment {
     public Comment(){
     }
 
+    public Comment(Long id, String body, String time, Post post, User user){
+        this.setId(id);
+        this.setCommentBody(body);
+        this.setCommentTime(time);
+        this.setPost(post);
+        this.setUser(user);
+    }
+
     public long getId() {
         return id;
     }

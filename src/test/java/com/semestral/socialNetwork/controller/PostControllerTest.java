@@ -12,21 +12,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
-import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
 import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModel;
 import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
-import com.semestral.socialNetwork.service.UserService;
 import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
@@ -40,7 +31,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,12 +38,6 @@ class PostControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private UserService userService;
-
-    @MockBean
-    private UserRepository userRepository;
 
     @MockBean
     private PostService postService;
@@ -66,7 +50,7 @@ class PostControllerTest {
         given(postService.createPost(any(Post.class), any(Long.class))).willReturn(postModel);
 
         this.mockMvc.perform(
-                    post("/posts", post)
+                    post("/posts")
                     .param("user_id", Long.toString(user.getId()))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"title\":\"some title\", \"body\":\"some body\"}")
