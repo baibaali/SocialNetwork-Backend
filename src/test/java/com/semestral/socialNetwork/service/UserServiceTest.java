@@ -108,8 +108,6 @@ class UserServiceTest {
         Assertions.assertEquals(postModel.getBody(), likedPosts.get(0).getBody());
         Assertions.assertEquals(postModel.getPostedAt(), likedPosts.get(0).getPostedAt());
 
-
-
     }
 
     @Test

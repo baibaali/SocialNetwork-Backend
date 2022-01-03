@@ -2,6 +2,7 @@ package com.semestral.socialNetwork.entity;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class Post {
         this.setBody(body);
         this.setPostedAt();
         this.setUser(user);
+        this.usersWhoLiked = new ArrayList<>();
     }
 
     public Long getId() {
