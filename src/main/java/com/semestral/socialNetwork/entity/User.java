@@ -1,6 +1,7 @@
 package com.semestral.socialNetwork.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "user")
@@ -27,6 +28,9 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.posts = new ArrayList<>();
+        this.likedPosts = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public User() {
