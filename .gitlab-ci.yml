@@ -17,3 +17,7 @@ java:
     when: always
     reports:
       junit: build/test-results/test/**/TEST-*.xml
+      
+      
+services:
+  - mysql:latest
