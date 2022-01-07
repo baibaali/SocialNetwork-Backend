@@ -1,23 +1,62 @@
+# image: gradle:jdk17
+
+# before_script:
+#   - export GRADLE_USER_HOME=`pwd`/.gradle
+#   - chmod +x gradlew
+
+# package:
+#   stage: build
+#   script:
+#     - ./gradlew assemble
+
+# java:
+#   stage: test
+#   script:
+#     - gradle test
+#   artifacts:
+#     when: always
+#     reports:
+#       junit: build/test-results/test/**/TEST-*.xml
+      
+      
+# services:
+#   - mysql:latest
+  
+  
+  
 image: gradle:jdk17
 
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
 before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - chmod +x gradlew
+  - export GRADLE_USER_HOME=pwd/.gradle
+  
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
 
-package:
+stages:
+  - build
+  - test
+
+build:
   stage: build
-  script:
-    - ./gradlew assemble
+  script: ./gradlew --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
 
-java:
+test:
   stage: test
-  script:
-    - gradle test
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
-      
-      
-services:
-  - mysql:latest
+  script: ./gradlew check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
