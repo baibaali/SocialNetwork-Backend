@@ -9,7 +9,11 @@ package:
   script:
     - ./gradlew assemble
 
-test:
+java:
   stage: test
   script:
-    - ./gradlew check
+    - gradle test
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
