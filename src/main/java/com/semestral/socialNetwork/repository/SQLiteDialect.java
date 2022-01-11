@@ -1,4 +1,4 @@
-package com.semestral.socialNetwork.model;
+package com.semestral.socialNetwork.repository;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;

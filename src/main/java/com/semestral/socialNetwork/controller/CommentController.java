@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class CommentController {
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private UserService userService;
+
     @Autowired
     private CommentService commentService;
 

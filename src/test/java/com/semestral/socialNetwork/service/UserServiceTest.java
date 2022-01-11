@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.atMost;
 
 import java.util.List;
 
-@SpringBootTest
+@WebMvcTest(UserService.class)
 class UserServiceTest {
 
     @Autowired
@@ -47,17 +48,17 @@ class UserServiceTest {
 
         User savedUser = userService.registration(user);
 
-        Assertions.assertEquals(user.getId(), savedUser.getId());
-        Assertions.assertEquals(user.getUsername(), savedUser.getUsername());
-        Assertions.assertEquals(user.getPassword(), savedUser.getPassword());
+        assertEquals(user.getId(), savedUser.getId());
+        assertEquals(user.getUsername(), savedUser.getUsername());
+        assertEquals(user.getPassword(), savedUser.getPassword());
 
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         Mockito.verify(userRepository, Mockito.atLeastOnce()).save(argumentCaptor.capture());
 
         User userProvidedToSave = argumentCaptor.getValue();
-        Assertions.assertEquals(1, userProvidedToSave.getId());
-        Assertions.assertEquals("baibaali", userProvidedToSave.getUsername());
-        Assertions.assertEquals("passwd", userProvidedToSave.getPassword());
+        assertEquals(1, userProvidedToSave.getId());
+        assertEquals("baibaali", userProvidedToSave.getUsername());
+        assertEquals("passwd", userProvidedToSave.getPassword());
 
     }
 
@@ -70,8 +71,8 @@ class UserServiceTest {
 
         UserModel findUser = userService.getOneUser(userModel.getId());
 
-        Assertions.assertEquals(userModel.getId(), findUser.getId());
-        Assertions.assertEquals(userModel.getUsername(), findUser.getUsername());
+        assertEquals(userModel.getId(), findUser.getId());
+        assertEquals(userModel.getUsername(), findUser.getUsername());
 
        }
 
@@ -86,7 +87,7 @@ class UserServiceTest {
         Long deletedUserId = userService.deleteUser(user.getId());
         Mockito.verify(userRepository, Mockito.atLeastOnce()).deleteById(user.getId());
 
-        Assertions.assertEquals(user.getId(), deletedUserId);
+        assertEquals(user.getId(), deletedUserId);
 
     }
 
@@ -103,10 +104,10 @@ class UserServiceTest {
 
         Mockito.verify(userRepository, Mockito.atLeastOnce()).findById(user.getId());
 
-        Assertions.assertEquals(postModel.getId(), likedPosts.get(0).getId());
-        Assertions.assertEquals(postModel.getTitle(), likedPosts.get(0).getTitle());
-        Assertions.assertEquals(postModel.getBody(), likedPosts.get(0).getBody());
-        Assertions.assertEquals(postModel.getPostedAt(), likedPosts.get(0).getPostedAt());
+        assertEquals(postModel.getId(), likedPosts.get(0).getId());
+        assertEquals(postModel.getTitle(), likedPosts.get(0).getTitle());
+        assertEquals(postModel.getBody(), likedPosts.get(0).getBody());
+        assertEquals(postModel.getPostedAt(), likedPosts.get(0).getPostedAt());
 
     }
 
@@ -123,8 +124,8 @@ class UserServiceTest {
 
         UserModelWithoutPostsList updatedUser = userService.updateUser(user.getId(), user);
 
-        Assertions.assertEquals(userModel.getId(), updatedUser.getId());
-        Assertions.assertEquals(userModel.getUsername(), updatedUser.getUsername());
+        assertEquals(userModel.getId(), updatedUser.getId());
+        assertEquals(userModel.getUsername(), updatedUser.getUsername());
 
         Mockito.verify(userRepository, atLeast(2)).findById(user.getId());
         Mockito.verify(userRepository, atMost(1)).findByUsername(user.getUsername());

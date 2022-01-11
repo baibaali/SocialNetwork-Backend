@@ -17,10 +17,6 @@ public class PostController {
 
     @Autowired
     private PostService postService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CommentService commentService;
 
     @PostMapping
     public ResponseEntity createPost(@RequestBody Post post, @RequestParam Long user_id) throws UserDoesntExistsException {
