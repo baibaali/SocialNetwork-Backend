@@ -11,8 +11,12 @@ import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,15 +33,15 @@ import static org.mockito.Mockito.atMost;
 
 import java.util.List;
 
-@WebMvcTest(UserService.class)
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Autowired
+    @InjectMocks
     private UserService userService;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
-    @MockBean
+    @Mock
     private PostRepository postRepository;
 
     @Test
@@ -118,7 +122,6 @@ class UserServiceTest {
         UserModelWithoutPostsList userModel = UserModelWithoutPostsList.toModel(user);
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
-        given(userRepository.findByUsername("baibaali")).willReturn(user);
         given(userRepository.save(any(User.class))).willReturn(user);
 
 

@@ -13,7 +13,11 @@ import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,17 +31,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 
-@WebMvcTest(CommentService.class)
+//@WebMvcTest(CommentService.class)
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-    @Autowired
+    @InjectMocks
     private CommentService commentService;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
-    @MockBean
+    @Mock
     private PostRepository postRepository;
-    @MockBean
+    @Mock
     private CommentRepository commentRepository;
 
     @Test
