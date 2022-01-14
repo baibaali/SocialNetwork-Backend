@@ -1,22 +1,17 @@
 package com.semestral.socialNetwork.controller;
 
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
-import com.semestral.socialNetwork.repository.UserRepository;
-import com.semestral.socialNetwork.service.CommentService;
 import com.semestral.socialNetwork.service.PostService;
-import com.semestral.socialNetwork.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
+import com.semestral.socialNetwork.dto.PostDTOWithoutUsersList;
+import com.semestral.socialNetwork.dto.UserDTOWithoutPostsList;
 import org.hamcrest.CoreMatchers;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
@@ -47,7 +42,7 @@ class PostControllerTest {
     void createPost() throws Exception {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
         given(postService.createPost(any(Post.class), any(Long.class))).willReturn(postModel);
 
         this.mockMvc.perform(
@@ -66,7 +61,7 @@ class PostControllerTest {
     void createPostFailed() throws Exception {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
         given(postService.createPost(any(Post.class), any(Long.class))).willThrow(UserDoesntExistsException.class);
 
         this.mockMvc.perform(
@@ -82,7 +77,7 @@ class PostControllerTest {
 
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
 
         given(postService.setLike(user.getId(), postModel.getId())).willReturn(postModel.getId());
 
@@ -98,7 +93,7 @@ class PostControllerTest {
 
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
 
         given(postService.setLike(any(Long.class), eq(postModel.getId()))).willThrow(UserDoesntExistsException.class);
         this.mockMvc.perform(
@@ -120,15 +115,15 @@ class PostControllerTest {
 
     @Test
     void getUsersWhoLikedPost() throws Exception {
-        List<UserModelWithoutPostsList> usersWhoLiked = new ArrayList<>();
+        List<UserDTOWithoutPostsList> usersWhoLiked = new ArrayList<>();
         User user = new User(1L, "baibaali", "dummypass");
         Post post = new Post(1L, "MyTitle", "My Body", user);
 
         User user1 = new User(2L, "User_1", "us1us");
         User user2 = new User(3L, "User_2", "2us2");
 
-        usersWhoLiked.add(UserModelWithoutPostsList.toModel(user1));
-        usersWhoLiked.add(UserModelWithoutPostsList.toModel(user2));
+        usersWhoLiked.add(UserDTOWithoutPostsList.toModel(user1));
+        usersWhoLiked.add(UserDTOWithoutPostsList.toModel(user2));
 
         given(postService.getUsersWhoLiked(post.getId())).willReturn(usersWhoLiked);
 
@@ -181,7 +176,7 @@ class PostControllerTest {
     void updatePost() throws Exception {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList updatedPost = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList updatedPost = PostDTOWithoutUsersList.toModel(post);
 
         given(postService.updatePost(any(Long.class), any(Post.class))).willReturn(updatedPost);
 
@@ -200,7 +195,7 @@ class PostControllerTest {
     void updatePostFailed() throws Exception {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
-        PostModelWithoutUsersList updatedPost = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList updatedPost = PostDTOWithoutUsersList.toModel(post);
 
         given(postService.updatePost(any(Long.class), any(Post.class))).willThrow(PostDoesntExistsException.class);
 

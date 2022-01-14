@@ -1,18 +1,16 @@
-package com.semestral.socialNetwork.model;
+package com.semestral.socialNetwork.dto;
 
 import com.semestral.socialNetwork.entity.Post;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class PostModelWithoutUsersList {
+public class PostDTOWithoutUsersList {
 
     private Long id;
     private String title;
     private String body;
     private String postedAt;
 
-    public static PostModelWithoutUsersList toModel(Post post) {
-        PostModelWithoutUsersList postModel = new PostModelWithoutUsersList();
+    public static PostDTOWithoutUsersList toModel(Post post) {
+        PostDTOWithoutUsersList postModel = new PostDTOWithoutUsersList();
         postModel.setId(post.getId());
         postModel.setTitle(post.getTitle());
         postModel.setBody(post.getBody());
@@ -20,7 +18,7 @@ public class PostModelWithoutUsersList {
         return postModel;
     }
 
-    public PostModelWithoutUsersList() {
+    public PostDTOWithoutUsersList() {
     }
 
     public Long getId() {

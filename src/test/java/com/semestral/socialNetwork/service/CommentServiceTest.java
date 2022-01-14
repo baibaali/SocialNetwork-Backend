@@ -7,7 +7,7 @@ import com.semestral.socialNetwork.exception.BadPermissionException;
 import com.semestral.socialNetwork.exception.CommentDoesntExistsException;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.CommentModel;
+import com.semestral.socialNetwork.dto.CommentDTO;
 import com.semestral.socialNetwork.repository.CommentRepository;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
@@ -18,15 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.util.Assert;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
@@ -50,23 +42,23 @@ class CommentServiceTest {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
         Comment comment = new Comment(1L, "it's my comment", Post.getCurrentTimeStamp(), post, user);
-        CommentModel commentModel = CommentModel.toModel(comment);
+        CommentDTO commentDTO = CommentDTO.toModel(comment);
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
         given(postRepository.findById(1L)).willReturn(java.util.Optional.of(post));
         given(commentRepository.save(any(Comment.class))).willReturn(comment);
 
-        CommentModel createdCommentModel = commentService.writeComment(user.getId(), post.getId(), comment);
+        CommentDTO createdCommentDTO = commentService.writeComment(user.getId(), post.getId(), comment);
 
-        Assertions.assertEquals(commentModel.getId(), createdCommentModel.getId());
-        Assertions.assertEquals(commentModel.getCommentBody(), createdCommentModel.getCommentBody());
-        Assertions.assertEquals(commentModel.getCommentTime(), createdCommentModel.getCommentTime());
-        Assertions.assertEquals(commentModel.getCommentOwner().getId(), createdCommentModel.getCommentOwner().getId());
-        Assertions.assertEquals(commentModel.getCommentOwner().getUsername(), createdCommentModel.getCommentOwner().getUsername());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getId(), createdCommentModel.getPostThatWasCommented().getId());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getTitle(), createdCommentModel.getPostThatWasCommented().getTitle());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getBody(), createdCommentModel.getPostThatWasCommented().getBody());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getPostedAt(), createdCommentModel.getPostThatWasCommented().getPostedAt());
+        Assertions.assertEquals(commentDTO.getId(), createdCommentDTO.getId());
+        Assertions.assertEquals(commentDTO.getCommentBody(), createdCommentDTO.getCommentBody());
+        Assertions.assertEquals(commentDTO.getCommentTime(), createdCommentDTO.getCommentTime());
+        Assertions.assertEquals(commentDTO.getCommentOwner().getId(), createdCommentDTO.getCommentOwner().getId());
+        Assertions.assertEquals(commentDTO.getCommentOwner().getUsername(), createdCommentDTO.getCommentOwner().getUsername());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getId(), createdCommentDTO.getPostThatWasCommented().getId());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getTitle(), createdCommentDTO.getPostThatWasCommented().getTitle());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getBody(), createdCommentDTO.getPostThatWasCommented().getBody());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getPostedAt(), createdCommentDTO.getPostThatWasCommented().getPostedAt());
 
         Mockito.verify(commentRepository, atLeastOnce()).save(comment);
 
@@ -95,24 +87,24 @@ class CommentServiceTest {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
         Comment comment  = new Comment(1L, "it's my comment", Post.getCurrentTimeStamp(), post, user);
-        CommentModel commentModel = CommentModel.toModel(comment);
+        CommentDTO commentDTO = CommentDTO.toModel(comment);
 
         given(userRepository.findById(user.getId())).willReturn(java.util.Optional.of(user));
         given(postRepository.findById(post.getId())).willReturn(java.util.Optional.of(post));
         given(commentRepository.findById(comment.getId())).willReturn(java.util.Optional.of(comment));
         given(commentRepository.save(any(Comment.class))).willReturn(comment);
 
-        CommentModel updatedComment = commentService.updateComment(user.getId(), post.getId(), comment.getId(), comment);
+        CommentDTO updatedComment = commentService.updateComment(user.getId(), post.getId(), comment.getId(), comment);
 
-        Assertions.assertEquals(commentModel.getId(), updatedComment.getId());
-        Assertions.assertEquals(commentModel.getCommentBody(), updatedComment.getCommentBody());
-        Assertions.assertEquals(commentModel.getCommentTime(), updatedComment.getCommentTime());
-        Assertions.assertEquals(commentModel.getCommentOwner().getId(), updatedComment.getCommentOwner().getId());
-        Assertions.assertEquals(commentModel.getCommentOwner().getUsername(), updatedComment.getCommentOwner().getUsername());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getId(), updatedComment.getPostThatWasCommented().getId());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getTitle(), updatedComment.getPostThatWasCommented().getTitle());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getBody(), updatedComment.getPostThatWasCommented().getBody());
-        Assertions.assertEquals(commentModel.getPostThatWasCommented().getPostedAt(), updatedComment.getPostThatWasCommented().getPostedAt());
+        Assertions.assertEquals(commentDTO.getId(), updatedComment.getId());
+        Assertions.assertEquals(commentDTO.getCommentBody(), updatedComment.getCommentBody());
+        Assertions.assertEquals(commentDTO.getCommentTime(), updatedComment.getCommentTime());
+        Assertions.assertEquals(commentDTO.getCommentOwner().getId(), updatedComment.getCommentOwner().getId());
+        Assertions.assertEquals(commentDTO.getCommentOwner().getUsername(), updatedComment.getCommentOwner().getUsername());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getId(), updatedComment.getPostThatWasCommented().getId());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getTitle(), updatedComment.getPostThatWasCommented().getTitle());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getBody(), updatedComment.getPostThatWasCommented().getBody());
+        Assertions.assertEquals(commentDTO.getPostThatWasCommented().getPostedAt(), updatedComment.getPostThatWasCommented().getPostedAt());
 
         Mockito.verify(commentRepository, atLeastOnce()).findById(comment.getId());
         Mockito.verify(commentRepository, atLeastOnce()).save(comment);

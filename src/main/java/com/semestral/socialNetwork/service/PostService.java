@@ -1,19 +1,16 @@
 package com.semestral.socialNetwork.service;
 
 
-import com.semestral.socialNetwork.entity.Comment;
 import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.PostModel;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModel;
-import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
+import com.semestral.socialNetwork.dto.PostDTO;
+import com.semestral.socialNetwork.dto.PostDTOWithoutUsersList;
+import com.semestral.socialNetwork.dto.UserDTOWithoutPostsList;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -28,13 +25,13 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public PostModelWithoutUsersList createPost(Post post, Long user_id) throws UserDoesntExistsException {
+    public PostDTOWithoutUsersList createPost(Post post, Long user_id) throws UserDoesntExistsException {
         User user;
         if (userRepository.findById(user_id).isPresent()){
             user = userRepository.findById(user_id).get();
             post.setUser(user);
             post.setPostedAt();
-            return PostModelWithoutUsersList.toModel(postRepository.save(post));
+            return PostDTOWithoutUsersList.toModel(postRepository.save(post));
         }
         else
             throw new UserDoesntExistsException("There is no user with specified id");
@@ -67,7 +64,7 @@ public class PostService {
         return id_post;
     }
 
-    public List<UserModelWithoutPostsList> getUsersWhoLiked(Long id_post) throws PostDoesntExistsException {
+    public List<UserDTOWithoutPostsList> getUsersWhoLiked(Long id_post) throws PostDoesntExistsException {
         Post post;
         try {
             post = postRepository.findById(id_post).get();
@@ -76,7 +73,7 @@ public class PostService {
         }
         if (post == null)
             throw new PostDoesntExistsException("There is no post with specified id");
-        return PostModel.toModel(post).getUsersWhoLiked();
+        return PostDTO.toModel(post).getUsersWhoLiked();
     }
 
     public Long deletePost(Long id) throws PostDoesntExistsException {
@@ -92,7 +89,7 @@ public class PostService {
             throw new PostDoesntExistsException("There is no user with specified id");
     }
 
-    public PostModelWithoutUsersList updatePost(Long id, Post updatedPost) throws PostDoesntExistsException {
+    public PostDTOWithoutUsersList updatePost(Long id, Post updatedPost) throws PostDoesntExistsException {
         if (postRepository.findById(id).isEmpty())
             throw new PostDoesntExistsException("There is no post with specified id");
         Post post = postRepository.findById(id).get();
@@ -108,7 +105,7 @@ public class PostService {
         if (isChanged)
             post.setPostedAt();
 
-        return PostModelWithoutUsersList.toModel(postRepository.save(post));
+        return PostDTOWithoutUsersList.toModel(postRepository.save(post));
 
     }
 

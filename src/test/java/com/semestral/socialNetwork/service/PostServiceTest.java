@@ -5,28 +5,21 @@ import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
+import com.semestral.socialNetwork.dto.PostDTOWithoutUsersList;
+import com.semestral.socialNetwork.dto.UserDTOWithoutPostsList;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -46,12 +39,12 @@ class PostServiceTest {
     void createPost() throws UserAlreadyExistsException, UserDoesntExistsException {
         User user = new User(1L, "baibaali", "passwd");
         Post post = new Post(1L, "post title", "post body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
         given(postRepository.save(any(Post.class))).willReturn(post);
 
-        PostModelWithoutUsersList savedPost = postService.createPost(post, user.getId());
+        PostDTOWithoutUsersList savedPost = postService.createPost(post, user.getId());
 
         Assertions.assertEquals(postModel.getId(), savedPost.getId());
         Assertions.assertEquals(postModel.getTitle(), savedPost.getTitle());
@@ -91,12 +84,12 @@ class PostServiceTest {
 
         User user = new User(1L, "baibaali", "passwd");
         Post post = new Post(1L, "post title", "post body", user);
-        UserModelWithoutPostsList userModel = UserModelWithoutPostsList.toModel(user);
+        UserDTOWithoutPostsList userModel = UserDTOWithoutPostsList.toModel(user);
         post.addLike(user);
 
         given(postRepository.findById(1L)).willReturn(java.util.Optional.of(post));
 
-        List<UserModelWithoutPostsList> usersWhoLiked = postService.getUsersWhoLiked(post.getId());
+        List<UserDTOWithoutPostsList> usersWhoLiked = postService.getUsersWhoLiked(post.getId());
 
         Assertions.assertEquals(userModel.getId(), usersWhoLiked.get(0).getId());
         Assertions.assertEquals(userModel.getUsername(), usersWhoLiked.get(0).getUsername());
@@ -126,12 +119,12 @@ class PostServiceTest {
     void updatePost() throws PostDoesntExistsException {
         User user = new User(1L, "baibaali", "passwd");
         Post post = new Post(1L, "post title", "post body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
 
         given(postRepository.findById(1L)).willReturn(java.util.Optional.of(post));
         given(postRepository.save(any(Post.class))).willReturn(post);
 
-        PostModelWithoutUsersList updatedPost = postService.updatePost(post.getId(), post);
+        PostDTOWithoutUsersList updatedPost = postService.updatePost(post.getId(), post);
 
         Assertions.assertEquals(postModel.getId(), updatedPost.getId());
         Assertions.assertEquals(postModel.getTitle(), updatedPost.getTitle());

@@ -6,8 +6,7 @@ import com.semestral.socialNetwork.exception.BadPermissionException;
 import com.semestral.socialNetwork.exception.CommentDoesntExistsException;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.CommentModel;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
+import com.semestral.socialNetwork.dto.CommentDTO;
 import com.semestral.socialNetwork.repository.CommentRepository;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
@@ -27,7 +26,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
 
-    public CommentModel writeComment(Long id_user, Long id_post, Comment comment) throws UserDoesntExistsException, PostDoesntExistsException {
+    public CommentDTO writeComment(Long id_user, Long id_post, Comment comment) throws UserDoesntExistsException, PostDoesntExistsException {
         if (userRepository.findById(id_user).isEmpty())
             throw new UserDoesntExistsException("User with specified id is not found");
         if (postRepository.findById(id_post).isEmpty())
@@ -37,7 +36,7 @@ public class CommentService {
         comment.setCommentTime(Post.getCurrentTimeStamp());
         postRepository.findById(id_post).get().setComment(comment);
         userRepository.findById(id_user).get().setComment(comment);
-        return CommentModel.toModel(commentRepository.save(comment));
+        return CommentDTO.toModel(commentRepository.save(comment));
     }
 
     public Long deleteComment(Long id_user, Long id_post, Long id_comment) throws PostDoesntExistsException, UserDoesntExistsException, CommentDoesntExistsException, BadPermissionException {
@@ -46,7 +45,7 @@ public class CommentService {
         return id_comment;
     }
 
-    public CommentModel updateComment(Long id_user, Long id_post, Long id_comment, Comment updatedComment) throws UserDoesntExistsException, PostDoesntExistsException, CommentDoesntExistsException, BadPermissionException {
+    public CommentDTO updateComment(Long id_user, Long id_post, Long id_comment, Comment updatedComment) throws UserDoesntExistsException, PostDoesntExistsException, CommentDoesntExistsException, BadPermissionException {
         validateComment(id_user, id_post, id_comment);
         Comment comment = commentRepository.findById(id_comment).get();
 
@@ -59,7 +58,7 @@ public class CommentService {
         if (isChanged)
             comment.setCommentTime(Post.getCurrentTimeStamp());
 
-        return CommentModel.toModel(commentRepository.save(comment));
+        return CommentDTO.toModel(commentRepository.save(comment));
 
     }
 

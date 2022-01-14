@@ -4,17 +4,15 @@ import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModel;
-import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
+import com.semestral.socialNetwork.dto.PostDTOWithoutUsersList;
+import com.semestral.socialNetwork.dto.UserDTO;
+import com.semestral.socialNetwork.dto.UserDTOWithoutPostsList;
 import com.semestral.socialNetwork.service.UserService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -77,7 +75,7 @@ class UserControllerTest {
 
     @Test
     void getOneUser() throws Exception {
-        UserModel user = new UserModel(1, "baibaali");
+        UserDTO user = new UserDTO(1, "baibaali");
 
         given(userService.getOneUser(user.getId())).willReturn(user);
         this.mockMvc.perform(
@@ -93,7 +91,7 @@ class UserControllerTest {
 
     @Test
     void getOneUserFailed() throws Exception {
-        UserModel user = new UserModel(1, "baibaali");
+        UserDTO user = new UserDTO(1, "baibaali");
 
         given(userService.getOneUser(user.getId())).willThrow(UserDoesntExistsException.class);
         this.mockMvc.perform(
@@ -126,13 +124,13 @@ class UserControllerTest {
 
     @Test
     void getLikedPost() throws Exception {
-        List<PostModelWithoutUsersList> likedPosts = new ArrayList<>();
+        List<PostDTOWithoutUsersList> likedPosts = new ArrayList<>();
         User user = new User(1L, "baibaali", "dummypass");
         Post post1 = new Post(1L, "Title", "Body", user);
         Post post2 = new Post(2L, "Title 2", "Body 2", user);
 
-        likedPosts.add(PostModelWithoutUsersList.toModel(post1));
-        likedPosts.add(PostModelWithoutUsersList.toModel(post2));
+        likedPosts.add(PostDTOWithoutUsersList.toModel(post1));
+        likedPosts.add(PostDTOWithoutUsersList.toModel(post2));
 
         given(userService.getLikedPosts(user.getId())).willReturn(likedPosts);
 
@@ -169,7 +167,7 @@ class UserControllerTest {
     @Test
     void updateUser() throws Exception {
         User user = new User (1, "baibaali", "dummypass");
-        UserModelWithoutPostsList updatedUser = UserModelWithoutPostsList.toModel(user);
+        UserDTOWithoutPostsList updatedUser = UserDTOWithoutPostsList.toModel(user);
 
         given(userService.updateUser(any(Long.class), any(User.class))).willReturn(updatedUser);
 

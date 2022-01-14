@@ -3,14 +3,12 @@ package com.semestral.socialNetwork.controller;
 import com.semestral.socialNetwork.entity.Comment;
 import com.semestral.socialNetwork.exception.BadPermissionException;
 import com.semestral.socialNetwork.exception.CommentDoesntExistsException;
-import com.semestral.socialNetwork.model.CommentModel;
+import com.semestral.socialNetwork.dto.CommentDTO;
 import com.semestral.socialNetwork.service.CommentService;
 import org.junit.jupiter.api.Test;
 import com.semestral.socialNetwork.exception.PostDoesntExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.semestral.socialNetwork.entity.Post;
@@ -45,23 +43,23 @@ class CommentControllerTest {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
         Comment comment = new Comment(1L, "it's my comment", Post.getCurrentTimeStamp(), post, user);
-        CommentModel commentModel = CommentModel.toModel(comment);
+        CommentDTO commentDTO = CommentDTO.toModel(comment);
 
-        given(commentService.writeComment(any(Long.class), any(Long.class), any(Comment.class))).willReturn(commentModel);
+        given(commentService.writeComment(any(Long.class), any(Long.class), any(Comment.class))).willReturn(commentDTO);
         this.mockMvc.perform(
                 post("/users/{id_user}/posts/{id_post}", user.getId(), post.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"commentBody\":\"it's my comment\"}")
         ).andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getId())))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.commentBody", CoreMatchers.is(commentModel.getCommentBody())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.commentTime", CoreMatchers.is(commentModel.getCommentTime())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getCommentOwner().getId())))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.username", CoreMatchers.is(commentModel.getCommentOwner().getUsername())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getPostThatWasCommented().getId())))))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.title", CoreMatchers.is(commentModel.getPostThatWasCommented().getTitle())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.body", CoreMatchers.is(commentModel.getPostThatWasCommented().getBody())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.postedAt", CoreMatchers.is(commentModel.getPostThatWasCommented().getPostedAt())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getId())))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.commentBody", CoreMatchers.is(commentDTO.getCommentBody())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.commentTime", CoreMatchers.is(commentDTO.getCommentTime())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getCommentOwner().getId())))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.username", CoreMatchers.is(commentDTO.getCommentOwner().getUsername())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getPostThatWasCommented().getId())))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.title", CoreMatchers.is(commentDTO.getPostThatWasCommented().getTitle())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.body", CoreMatchers.is(commentDTO.getPostThatWasCommented().getBody())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.postedAt", CoreMatchers.is(commentDTO.getPostThatWasCommented().getPostedAt())));
     }
 
     @Test
@@ -159,25 +157,25 @@ class CommentControllerTest {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
         Comment comment = new Comment(1L, "it's my comment", Post.getCurrentTimeStamp(), post, user);
-        CommentModel commentModel = CommentModel.toModel(comment);
+        CommentDTO commentDTO = CommentDTO.toModel(comment);
 
-        given(commentService.updateComment(eq(user.getId()), eq(post.getId()), eq(comment.getId()), any(Comment.class))).willReturn(commentModel);
+        given(commentService.updateComment(eq(user.getId()), eq(post.getId()), eq(comment.getId()), any(Comment.class))).willReturn(commentDTO);
 
         this.mockMvc.perform(
                     put("/users/{id_user}/posts/{id_post}/comments", user.getId(), post.getId())
-                    .param("id_comment", Long.toString(commentModel.getId()))
+                    .param("id_comment", Long.toString(commentDTO.getId()))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"commentBody\":\"it's my comment\"}")
         ).andExpect(status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getId())))))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentBody", CoreMatchers.is(commentModel.getCommentBody())))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentTime", CoreMatchers.is(commentModel.getCommentTime())))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getCommentOwner().getId())))))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.username", CoreMatchers.is(commentModel.getCommentOwner().getUsername())))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentModel.getPostThatWasCommented().getId())))))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.title", CoreMatchers.is(commentModel.getPostThatWasCommented().getTitle())))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.body", CoreMatchers.is(commentModel.getPostThatWasCommented().getBody())))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.postedAt", CoreMatchers.is(commentModel.getPostThatWasCommented().getPostedAt())));
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getId())))))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentBody", CoreMatchers.is(commentDTO.getCommentBody())))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentTime", CoreMatchers.is(commentDTO.getCommentTime())))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getCommentOwner().getId())))))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.commentOwner.username", CoreMatchers.is(commentDTO.getCommentOwner().getUsername())))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.id", CoreMatchers.is(Integer.valueOf(Long.toString(commentDTO.getPostThatWasCommented().getId())))))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.title", CoreMatchers.is(commentDTO.getPostThatWasCommented().getTitle())))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.body", CoreMatchers.is(commentDTO.getPostThatWasCommented().getBody())))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.postThatWasCommented.postedAt", CoreMatchers.is(commentDTO.getPostThatWasCommented().getPostedAt())));
     }
 
     @Test
@@ -186,12 +184,12 @@ class CommentControllerTest {
         User user = new User(1L, "baibaali", "passw");
         Post post = new Post(1L, "some title", "some body", user);
         Comment comment = new Comment(1L, "it's my comment", Post.getCurrentTimeStamp(), post, user);
-        CommentModel commentModel = CommentModel.toModel(comment);
+        CommentDTO commentDTO = CommentDTO.toModel(comment);
 
         given(commentService.updateComment(any(Long.class), eq(post.getId()), eq(comment.getId()), any(Comment.class))).willThrow(UserDoesntExistsException.class);
         this.mockMvc.perform(
                 put("/users/{id_user}/posts/{id_post}/comments", 2L, post.getId())
-                        .param("id_comment", Long.toString(commentModel.getId()))
+                        .param("id_comment", Long.toString(commentDTO.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"commentBody\":\"it's my comment\"}")
         ).andExpect(status().is4xxClientError());
@@ -199,7 +197,7 @@ class CommentControllerTest {
         given(commentService.updateComment(eq(user.getId()), any(Long.class), eq(comment.getId()), any(Comment.class))).willThrow(PostDoesntExistsException.class);
         this.mockMvc.perform(
                 put("/users/{id_user}/posts/{id_post}/comments", user.getId(), 2L)
-                        .param("id_comment", Long.toString(commentModel.getId()))
+                        .param("id_comment", Long.toString(commentDTO.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"commentBody\":\"it's my comment\"}")
         ).andExpect(status().is4xxClientError());

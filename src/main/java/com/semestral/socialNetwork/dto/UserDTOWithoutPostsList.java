@@ -1,20 +1,17 @@
-package com.semestral.socialNetwork.model;
+package com.semestral.socialNetwork.dto;
 
-import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class UserModelWithoutPostsList {
+public class UserDTOWithoutPostsList {
 
     private Long id;
     private String username;
 
-    public UserModelWithoutPostsList() {
+    public UserDTOWithoutPostsList() {
     }
 
-    public static UserModelWithoutPostsList toModel(User userEntity){
-        UserModelWithoutPostsList userModel = new UserModelWithoutPostsList();
+    public static UserDTOWithoutPostsList toModel(User userEntity){
+        UserDTOWithoutPostsList userModel = new UserDTOWithoutPostsList();
         userModel.setId(userEntity.getId());
         userModel.setUsername(userEntity.getUsername());
         return userModel;

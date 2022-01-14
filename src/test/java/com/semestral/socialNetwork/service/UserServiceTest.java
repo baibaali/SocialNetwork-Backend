@@ -4,12 +4,11 @@ import com.semestral.socialNetwork.entity.Post;
 import com.semestral.socialNetwork.entity.User;
 import com.semestral.socialNetwork.exception.UserAlreadyExistsException;
 import com.semestral.socialNetwork.exception.UserDoesntExistsException;
-import com.semestral.socialNetwork.model.PostModelWithoutUsersList;
-import com.semestral.socialNetwork.model.UserModel;
-import com.semestral.socialNetwork.model.UserModelWithoutPostsList;
+import com.semestral.socialNetwork.dto.PostDTOWithoutUsersList;
+import com.semestral.socialNetwork.dto.UserDTO;
+import com.semestral.socialNetwork.dto.UserDTOWithoutPostsList;
 import com.semestral.socialNetwork.repository.PostRepository;
 import com.semestral.socialNetwork.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -17,11 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 
@@ -69,14 +63,14 @@ class UserServiceTest {
     @Test
     void getOneUser() throws UserDoesntExistsException {
         User user = new User(1L, "baibaali", "passwd");
-        UserModel userModel = new UserModel(1L, "baibaali");
+        UserDTO userDTO = new UserDTO(1L, "baibaali");
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
 
-        UserModel findUser = userService.getOneUser(userModel.getId());
+        UserDTO findUser = userService.getOneUser(userDTO.getId());
 
-        assertEquals(userModel.getId(), findUser.getId());
-        assertEquals(userModel.getUsername(), findUser.getUsername());
+        assertEquals(userDTO.getId(), findUser.getId());
+        assertEquals(userDTO.getUsername(), findUser.getUsername());
 
        }
 
@@ -100,11 +94,11 @@ class UserServiceTest {
         User user = new User(1L, "baibaali", "passwd");
 
         Post post = new Post(1L, "post title", "post body", user);
-        PostModelWithoutUsersList postModel = PostModelWithoutUsersList.toModel(post);
+        PostDTOWithoutUsersList postModel = PostDTOWithoutUsersList.toModel(post);
         user.addLikedPost(post);
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
-        List<PostModelWithoutUsersList> likedPosts = userService.getLikedPosts(user.getId());
+        List<PostDTOWithoutUsersList> likedPosts = userService.getLikedPosts(user.getId());
 
         Mockito.verify(userRepository, Mockito.atLeastOnce()).findById(user.getId());
 
@@ -119,13 +113,13 @@ class UserServiceTest {
     void updateUser() throws UserAlreadyExistsException, UserDoesntExistsException {
         User user = new User(1L, "baibaali", "passwd");
 
-        UserModelWithoutPostsList userModel = UserModelWithoutPostsList.toModel(user);
+        UserDTOWithoutPostsList userModel = UserDTOWithoutPostsList.toModel(user);
 
         given(userRepository.findById(1L)).willReturn(java.util.Optional.of(user));
         given(userRepository.save(any(User.class))).willReturn(user);
 
 
-        UserModelWithoutPostsList updatedUser = userService.updateUser(user.getId(), user);
+        UserDTOWithoutPostsList updatedUser = userService.updateUser(user.getId(), user);
 
         assertEquals(userModel.getId(), updatedUser.getId());
         assertEquals(userModel.getUsername(), updatedUser.getUsername());
